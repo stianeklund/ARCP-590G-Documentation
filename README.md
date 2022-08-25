@@ -14,8 +14,9 @@ Kenwood uses ASCII, where `0x00-0x1f` are control codes, and `;` is the terminat
 
 The ARCP-590G client can connect over USB / serial or through KNS (Kenwood Network System), KNS is basically Serial over TCP/IP.
 
-The encoding is UTF-16, which is why the hex dumps below have 00 bytes padded..
-I guess this means ARCP is "unicode"?
+The encoding is UTF-16LE, which is why the hex dumps below have 00 bytes padded..
+ARCP and ARVP / ARHP use UTF-16LE.
+
 
 **ARCP connecting to dummy serial (no radio):**
 ```
