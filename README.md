@@ -20,8 +20,8 @@ ARCP and ARVP / ARHP use UTF-16LE.
 
 **ARCP connecting to dummy serial (no radio):**
 ```
-;;;
-TC 1;         <-- Unknown command, guess this is Client Connect (radio doesn't respond to TC commands)
+;;;           <-- ; is sent just to wake the transceiver up
+TC 1;         <-- Transceiver Control ("undocumented" CAT command. Used to indicate that the transceiver is connected to a PC.
 ;;;ID;;;ID;;;;
 TC 1;
 ;;;ID;;;ID;;;;
@@ -33,8 +33,7 @@ TC 1;
 ;;;ID;;;ID;   <-- timeout window reached here
 ```
 
-* The `TC 1` command is unknown; not found in any documentation, possibly connect command or some sort of timeout / timer?
-* It seems to send `;` as a part of a preamble or wakeup?
+* The `TC 1` command isn't really documented anywhere but is a part of the Kenwood CAT command protocol.
 
 
 **Client connect process, radio response:**
@@ -71,7 +70,7 @@ EX06100001;  EX06900001;  EX07000001;  EX08500001;
 TS0;
 FR0;  // Sets or reads VFO A (we're in frequency mode not memory mode) 
 MD2;  // Recall or read operating mode, 2 is USB. This command will echo back confirming mode 
-(Interesting tidbit: `MK` command exists, but why, seems to be panel only?)
+
 
 IF00028074000      000000051020000080; 
 
@@ -125,14 +124,15 @@ The authentication sequence is (per ARCP):
 "U I D : U S E R ;", <-- Not a CAT command
 "P W D : P a s s w o r d ;" <-- Not a CAT command
 ```
-Authentication commands are ignored by the radio?
+Authentication commands are ignored by the radio.
+Some variants of these commands also exist with newer Kenwood radios with VoIP support etc.
 
 #### Keep Alive sequence:
 
 The `PS;` command is used as a keepalive, possibly in with ` AI;`
 This is necessary to avoid the TCP or serial connection from being closed.
 
-When (on) and idle the radio will simply repeat (over serial):
+When (on) and idle the radio will simply repeat (over serial) with a ~1.5 second interval
 ```
 PS1; AI0;? ;?; PS1; AI0;? ;?; PS1; AI0; ?; ?; PS1; AI0;? ;?;
 ```
